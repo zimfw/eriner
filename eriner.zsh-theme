@@ -1,33 +1,17 @@
 # vim:et sts=2 sw=2 ft=zsh
-#
-# Eriner's Theme - fork of agnoster
-# A Powerline-inspired theme for ZSH
-#
-# In order for this theme to render correctly, a font with Powerline symbols is
-# required. A simple way to install a font with Powerline symbols is to follow
-# the instructions here: https://github.com/powerline/fonts#installation
-#
-# The aim of this theme is to only show you *relevant* information. Like most
-# prompts, it will only show git information when in a git working directory.
-# However, it goes a step further: everything from the current user and
-# hostname to whether the last call exited with an error to whether background
-# jobs are running in this shell will all be displayed automatically when
-# appropriate.
-#
-# Requires the `git-info` zmodule to be included in the .zimrc file.
 
 prompt_eriner_help () {
   cat <<EOH
-This prompt is color-scheme-able. You can customize it using:
+This theme is color-scheme-able. You can customize it using:
 
     prompt eriner [status_color] [pwd_color] [git_clean_color] [git_dirty_color]
 
 where the parameters are the background colors for each segment. The default
 values are black, cyan, green, and yellow.
 
-In order for this prompt to render correctly, a font with Powerline symbols is
-required. A simple way to install a font with Powerline symbols is to follow
-the instructions here: https://github.com/powerline/fonts#installation
+In order for this theme to render correctly, a font with Powerline symbols is
+required. A simple way to install a font with Powerline symbols is to follow the
+instructions here: https://github.com/powerline/fonts#installation
 EOH
 }
 
@@ -128,7 +112,7 @@ prompt_eriner_setup() {
 }
 
 prompt_eriner_preview () {
-  if (( ${#} )); then
+  if (( # )); then
     prompt_preview_theme eriner "${@}"
   else
     prompt_preview_theme eriner
