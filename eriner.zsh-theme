@@ -19,6 +19,7 @@ prompt_eriner_main() {
   local prompt_eriner_retval=${?}
   local prompt_eriner_color1=${1:-black}
   local prompt_eriner_color2=${2:-cyan}
+  local prompt_eriner_color3=${3:-green}
 
   ### Segment drawing
   # Utility functions to make it easy and re-usable to draw segmented prompts.
@@ -69,14 +70,18 @@ prompt_eriner_main() {
 
   # Pwd: current working directory.
   prompt_eriner_pwd() {
-    prompt_eriner_standout_segment ${prompt_eriner_color2} " $(short_pwd) "
+    local current_dir="${PWD/#${HOME}/~}"
+    if [[ ${current_dir} != '~' ]]; then
+      current_dir="${${(@j:/:M)${(@s:/:)current_dir:h}#?}%/}/${current_dir:t}"
+    fi
+    prompt_eriner_standout_segment ${prompt_eriner_color2} " ${current_dir} "
   }
 
   # Git: branch/detached head, dirty status.
   prompt_eriner_git() {
     if [[ -n ${git_info} ]]; then
       local indicator
-      [[ ${git_info[color]} == yellow ]] && indicator=' ±'
+      [[ ${git_info[color]} != ${prompt_eriner_color3} ]] && indicator=' ±'
       prompt_eriner_standout_segment ${git_info[color]} " ${(e)git_info[prompt]}${indicator} "
     fi
   }
@@ -109,7 +114,7 @@ prompt_eriner_setup() {
     'prompt' '%b%c%s' \
     'color' '%C%D'
 
-  PS1="\$(prompt_eriner_main ${@:1:2})"
+  PS1="\$(prompt_eriner_main ${@:1:3})"
   RPS1=''
 }
 
