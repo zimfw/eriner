@@ -20,6 +20,7 @@ What does it show?
     * `⚡` when you're root.
     * `⚙` when there are background jobs.
     * `r` when you're in a [`ranger`](https://github.com/ranger/ranger) spawned shell.
+    * Python [`venv`](https://docs.python.org/3/library/venv.html) indicator.
     * `user@hostname` when user is not `DEFAULT_USER` (which can then be set in your zprofile).
   * Short working directory segment.
   * Git segment (background color varies if working tree is clean or dirty):

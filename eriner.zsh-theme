@@ -58,6 +58,7 @@ prompt_eriner_main() {
     (( UID == 0 )) && segment+=' %F{yellow}⚡'
     (( $(jobs -l | wc -l) )) && segment+=' %F{cyan}⚙'
     (( RANGER_LEVEL )) && segment+=' %F{cyan}r'
+    [[ -n ${VIRTUAL_ENV} ]] && segment+=" %F{cyan}${VIRTUAL_ENV:t}"
     if [[ ${USER} != ${DEFAULT_USER} || -n ${SSH_CLIENT} ]]; then
        segment+=" %F{%(!.yellow.default)}${USER}@%m"
     fi
@@ -91,6 +92,7 @@ prompt_eriner_precmd() {
 }
 
 prompt_eriner_setup() {
+  VIRTUAL_ENV_DISABLE_PROMPT=1
   autoload -Uz add-zsh-hook && add-zsh-hook precmd prompt_eriner_precmd
 
   prompt_opts=(cr percent sp subst)
