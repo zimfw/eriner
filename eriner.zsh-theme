@@ -16,35 +16,37 @@ EOH
 }
 
 prompt_eriner_main() {
-  local prompt_eriner_retval=${?}
-  local prompt_eriner_color1=${1:-black}
-  local prompt_eriner_color2=${2:-cyan}
-  local prompt_eriner_color3=${3:-green}
+  # This runs in a subshell
+  RETVAL=${?}
+  COLOR1=${1:-black}
+  COLOR2=${2:-cyan}
+  COLOR_CLEAN=${3:-green}
+  COLOR_DIRTY=${4:-yellow}
 
   ### Segment drawing
   # Utility functions to make it easy and re-usable to draw segmented prompts.
 
-  local prompt_eriner_bg
+  COLOR_BG=''
 
   # Begin a segment. Takes two arguments, background color and contents of the
   # new segment.
   prompt_eriner_segment() {
     print -n "%K{${1}}"
-    [[ -n ${prompt_eriner_bg} ]] && print -n "%F{${prompt_eriner_bg}}"
+    [[ -n ${COLOR_BG} ]] && print -n "%F{${COLOR_BG}}"
     print -n "${2}"
-    prompt_eriner_bg=${1}
+    COLOR_BG=${1}
   }
 
   prompt_eriner_standout_segment() {
     print -n "%S%F{${1}}"
-    [[ -n ${prompt_eriner_bg} ]] && print -n "%K{${prompt_eriner_bg}}%k"
+    [[ -n ${COLOR_BG} ]] && print -n "%K{${COLOR_BG}}%k"
     print -n "${2}%s"
-    prompt_eriner_bg=${1}
+    COLOR_BG=${1}
   }
 
   # End the prompt, closing last segment.
   prompt_eriner_end() {
-    print -n "%k%F{${prompt_eriner_bg}}%f "
+    print -n "%k%F{${COLOR_BG}}%f "
   }
 
   ### Prompt components
@@ -55,16 +57,16 @@ prompt_eriner_main() {
   # spawned shell? Who and where am I (user@hostname)?
   prompt_eriner_status() {
     local segment=''
-    (( prompt_eriner_retval )) && segment+=' %F{red}✘'
-    (( UID == 0 )) && segment+=' %F{yellow}⚡'
+    (( RETVAL )) && segment+=' %F{red}✘'
+    (( EUID == 0 )) && segment+=' %F{yellow}⚡'
     (( $(jobs -l | wc -l) )) && segment+=' %F{cyan}⚙'
     (( RANGER_LEVEL )) && segment+=' %F{cyan}r'
     [[ -n ${VIRTUAL_ENV} ]] && segment+=" %F{cyan}${VIRTUAL_ENV:t}"
     if [[ ${USER} != ${DEFAULT_USER} || -n ${SSH_CLIENT} ]]; then
-       segment+=" %F{%(!.yellow.default)}${USER}@%m"
+      segment+=" %F{%(!.yellow.default)}${USER}@%m"
     fi
     if [[ -n ${segment} ]]; then
-      prompt_eriner_segment ${prompt_eriner_color1} "${segment} "
+      prompt_eriner_segment ${COLOR1} "${segment} "
     fi
   }
 
@@ -74,15 +76,20 @@ prompt_eriner_main() {
     if [[ ${current_dir} != '~' ]]; then
       current_dir="${${(@j:/:M)${(@s:/:)current_dir:h}#?}%/}/${current_dir:t}"
     fi
-    prompt_eriner_standout_segment ${prompt_eriner_color2} " ${current_dir} "
+    prompt_eriner_standout_segment ${COLOR2} " ${current_dir} "
   }
 
   # Git: branch/detached head, dirty status.
   prompt_eriner_git() {
     if [[ -n ${git_info} ]]; then
-      local indicator
-      [[ ${git_info[color]} != ${prompt_eriner_color3} ]] && indicator=' ±'
-      prompt_eriner_standout_segment ${git_info[color]} " ${(e)git_info[prompt]}${indicator} "
+      local git_color
+      local git_dirty=${(e)git_info[dirty]}
+      if [[ -n ${git_dirty} ]]; then
+        git_color=${COLOR_DIRTY}
+      else
+        git_color=${COLOR_CLEAN}
+      fi
+      prompt_eriner_standout_segment ${git_color} " ${(e)git_info[prompt]}${git_dirty} "
     fi
   }
 
@@ -102,19 +109,15 @@ prompt_eriner_setup() {
 
   prompt_opts=(cr percent sp subst)
 
-  local prompt_eriner_color3=${3:-green}
-  local prompt_eriner_color4=${4:-yellow}
-
   zstyle ':zim:git-info:branch' format ' %b'
   zstyle ':zim:git-info:commit' format '➦ %c'
   zstyle ':zim:git-info:action' format ' (%s)'
-  zstyle ':zim:git-info:clean' format ${prompt_eriner_color3}
-  zstyle ':zim:git-info:dirty' format ${prompt_eriner_color4}
+  zstyle ':zim:git-info:dirty' format ' ±'
   zstyle ':zim:git-info:keys' format \
     'prompt' '%b%c%s' \
-    'color' '%C%D'
+    'dirty' '%D'
 
-  PS1="\$(prompt_eriner_main ${@:1:3})"
+  PS1="\$(prompt_eriner_main ${@})"
   RPS1=''
 }
 
@@ -124,7 +127,7 @@ prompt_eriner_preview () {
   else
     prompt_preview_theme eriner
     print
-    prompt_preview_theme eriner black blue green yellow
+    prompt_preview_theme eriner black blue
   fi
 }
 
