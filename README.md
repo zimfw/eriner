@@ -28,24 +28,18 @@ What does it show?
       ['detached HEAD' state](http://gitfaq.org/articles/what-is-a-detached-head.html).
     * `±` when in a dirty working tree.
 
-Usage
------
+Settings
+--------
 
-This theme is color-scheme-able. You can customize it using:
+The background color for each segment can be customized with an environment
+variable. If the variable is not defined, the respective default value is used.
 
-    prompt eriner [status_color] [pwd_color] [git_clean_color] [git_dirty_color]
-
-where the parameters are the background colors for each segment. The default
-values are `black`, `cyan`, `green`, and `yellow`.
-
-If you enabled Zim's [`prompt`](https://github.com/zimfw/prompt) module, you can
-set this as your default theme with the following zstyle:
-
-    zstyle ':zim:prompt' theme 'eriner'
-
-Additional customization parameters can be passed too. For example:
-
-    zstyle ':zim:prompt' theme 'eriner' 'black' 'blue'
+| Variable     | Description                          | Default value |
+| ------------ | ------------------------------------ | ------------- |
+| STATUS_COLOR | Status segment color                 | black         |
+| PWD_COLOR    | Working directory segment color      | cyan          |
+| CLEAN_COLOR  | Clean git working tree segment color | green         |
+| DIRTY_COLOR  | Dirty git working tree segment color | yellow        |
 
 Requirements
 ------------
