@@ -18,14 +18,14 @@ _prompt_eriner_main() {
 # new segment.
 _prompt_eriner_segment() {
   print -n "%K{${1}}"
-  [[ -n ${BG_COLOR} ]] && print -n "%F{${BG_COLOR}}"
+  if [[ -n ${BG_COLOR} ]] print -n "%F{${BG_COLOR}}"
   print -n "${2}"
   BG_COLOR=${1}
 }
 
 _prompt_eriner_standout_segment() {
   print -n "%S%F{${1}}"
-  [[ -n ${BG_COLOR} ]] && print -n "%K{${BG_COLOR}}%k"
+  if [[ -n ${BG_COLOR} ]] print -n "%K{${BG_COLOR}}%k"
   print -n "${2}%s"
   BG_COLOR=${1}
 }
@@ -43,11 +43,11 @@ _prompt_eriner_end() {
 # spawned shell? Python venv activated? Who and where am I (user@hostname)?
 _prompt_eriner_status() {
   local segment=''
-  (( RETVAL )) && segment+=' %F{red}✘'
-  (( EUID == 0 )) && segment+=' %F{yellow}⚡'
-  (( $(jobs -l | wc -l) )) && segment+=' %F{cyan}⚙'
-  (( RANGER_LEVEL )) && segment+=' %F{cyan}r'
-  [[ -n ${VIRTUAL_ENV} ]] && segment+=" %F{cyan}${VIRTUAL_ENV:t}"
+  if (( RETVAL )) segment+=' %F{red}✘'
+  if (( EUID == 0 )) segment+=' %F{yellow}⚡'
+  if (( $(jobs -l | wc -l) )) segment+=' %F{cyan}⚙'
+  if (( RANGER_LEVEL )) segment+=' %F{cyan}r'
+  if [[ -n ${VIRTUAL_ENV} ]] segment+=" %F{cyan}${VIRTUAL_ENV:t}"
   if [[ ${USER} != ${DEFAULT_USER} || -n ${SSH_CLIENT} ]]; then
     segment+=" %F{%(!.yellow.default)}${USER}@%m"
   fi
@@ -85,7 +85,7 @@ _prompt_eriner_git() {
 : ${DIRTY_COLOR=yellow}
 VIRTUAL_ENV_DISABLE_PROMPT=1
 
-setopt nopromptbang promptcr promptpercent promptsp promptsubst
+setopt nopromptbang prompt{cr,percent,sp,subst}
 
 if (( ${+functions[git-info]} )); then
   zstyle ':zim:git-info:branch' format ' %b'
