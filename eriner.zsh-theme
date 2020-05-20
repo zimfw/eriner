@@ -48,9 +48,7 @@ _prompt_eriner_status() {
   if (( $(jobs -l | wc -l) )) segment+=' %F{cyan}⚙'
   if (( RANGER_LEVEL )) segment+=' %F{cyan}r'
   if [[ -n ${VIRTUAL_ENV} ]] segment+=" %F{cyan}${VIRTUAL_ENV:t}"
-  if [[ ${USER} != ${DEFAULT_USER} || -n ${SSH_CLIENT} ]]; then
-    segment+=" %F{%(!.yellow.default)}${USER}@%m"
-  fi
+  if [[ -n ${SSH_TTY} ]] segment+=" %F{%(!.yellow.default)}%n@%m"
   if [[ -n ${segment} ]]; then
     _prompt_eriner_segment ${STATUS_COLOR} "${segment} "
   fi

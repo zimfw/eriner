@@ -9,7 +9,7 @@ However, it goes a step further: everything from the current user and hostname
 to whether the last call exited with an error to whether background jobs are
 running in this shell will all be displayed automatically when appropriate.
 
-![eriner theme]
+<img width="706" src="https://zimfw.github.io/images/prompts/eriner@2.png">
 
 What does it show?
 ------------------
@@ -20,8 +20,7 @@ What does it show?
     * `⚙` when there are background jobs.
     * `r` when you're in a [ranger] spawned shell.
     * Python [venv] indicator.
-    * `user@hostname` when user is not `DEFAULT_USER`
-      (which can then be set in your zprofile).
+    * `username@hostname` when in a ssh session.
   * Short working directory segment.
   * Git segment (background color varies if working tree is clean or dirty):
     * Current branch name, or commit short hash when in ['detached HEAD' state].
@@ -50,7 +49,6 @@ required. A simple way to install a font with Powerline symbols is to follow the
 Requires Zim's [git-info] module to show git information.
 
 [agnoster]: https://github.com/agnoster/agnoster-zsh-theme
-[eriner theme]: https://zimfw.github.io/images/prompts/eriner.png
 [ranger]: https://github.com/ranger/ranger
 [venv]: https://docs.python.org/3/library/venv.html
 ['detached HEAD' state]: http://gitfaq.org/articles/what-is-a-detached-head.html
