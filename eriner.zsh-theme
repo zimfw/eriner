@@ -56,7 +56,7 @@ _prompt_eriner_status() {
 
 # Pwd: current working directory.
 _prompt_eriner_pwd() {
-  local current_dir="${PWD/#${HOME}/~}"
+  local current_dir=${(%):-%~}
   if [[ ${current_dir} != '~' ]]; then
     current_dir="${${(@j:/:M)${(@s:/:)current_dir:h}#?}%/}/${current_dir:t}"
   fi
