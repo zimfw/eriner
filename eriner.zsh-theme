@@ -77,11 +77,11 @@ _prompt_eriner_git() {
   fi
 }
 
-: ${STATUS_COLOR=black}
-: ${PWD_COLOR=cyan}
-: ${CLEAN_COLOR=green}
-: ${DIRTY_COLOR=yellow}
-VIRTUAL_ENV_DISABLE_PROMPT=1
+if (( ! ${+STATUS_COLOR} )) typeset -g STATUS_COLOR=black
+if (( ! ${+PWD_COLOR} )) typeset -g PWD_COLOR=cyan
+if (( ! ${+CLEAN_COLOR} )) typeset -g CLEAN_COLOR=green
+if (( ! ${+DIRTY_COLOR} )) typeset -g DIRTY_COLOR=yellow
+typeset -g VIRTUAL_ENV_DISABLE_PROMPT=1
 
 setopt nopromptbang prompt{cr,percent,sp,subst}
 
