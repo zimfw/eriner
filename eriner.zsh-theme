@@ -3,7 +3,7 @@
 _prompt_eriner_main() {
   # This runs in a subshell
   RETVAL=${?}
-  BG_COLOR=''
+  BG_COLOR=
 
   _prompt_eriner_status
   _prompt_eriner_pwd
@@ -19,7 +19,7 @@ _prompt_eriner_main() {
 _prompt_eriner_segment() {
   print -n "%K{${1}}"
   if [[ -n ${BG_COLOR} ]] print -n "%F{${BG_COLOR}}"
-  print -n "${2}"
+  print -n ${2}
   BG_COLOR=${1}
 }
 
@@ -42,7 +42,7 @@ _prompt_eriner_end() {
 # Status: Was there an error? Am I root? Are there background jobs? Ranger
 # spawned shell? Python venv activated? Who and where am I (user@hostname)?
 _prompt_eriner_status() {
-  local segment=''
+  local segment=
   if (( RETVAL )) segment+=' %F{red}✘'
   if (( EUID == 0 )) segment+=' %F{yellow}⚡'
   if (( $(jobs -l | wc -l) )) segment+=' %F{cyan}⚙'
