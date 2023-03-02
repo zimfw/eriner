@@ -56,10 +56,8 @@ _prompt_eriner_status() {
 
 # Pwd: current working directory.
 _prompt_eriner_pwd() {
-  local current_dir=${(%):-%~}
-  if [[ ${current_dir} != '~' ]]; then
-    current_dir="${${(@j:/:M)${(@s:/:)current_dir:h}#?}%/}/${current_dir:t}"
-  fi
+  local current_dir
+  prompt-pwd current_dir
   _prompt_eriner_standout_segment ${PWD_COLOR} " ${current_dir} "
 }
 
@@ -85,6 +83,9 @@ typeset -g VIRTUAL_ENV_DISABLE_PROMPT=1
 
 setopt nopromptbang prompt{cr,percent,sp,subst}
 
+zstyle ':zim:prompt-pwd:fish-style' dir-length 1
+
+typeset -gA git_info
 if (( ${+functions[git-info]} )); then
   zstyle ':zim:git-info:branch' format ' %b'
   zstyle ':zim:git-info:commit' format '➦ %c'
