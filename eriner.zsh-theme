@@ -47,8 +47,12 @@ _prompt_eriner_status() {
   if (( EUID == 0 )) segment+=' %F{yellow}⚡'
   if (( ${#jobstates} )) segment+=' %F{cyan}⚙'
   if (( RANGER_LEVEL )) segment+=' %F{cyan}r'
-  if [[ -n ${VIRTUAL_ENV} ]] segment+=" %F{cyan}${VIRTUAL_ENV:t}"
-  if [[ -n ${SSH_TTY} ]] segment+=" %F{%(!.yellow.default)}%n@%m"
+  if [[ -n ${VIRTUAL_ENV_PROMPT} ]]; then
+    segment+=' %F{cyan}'${VIRTUAL_ENV_PROMPT% }
+  elif [[ -n ${VIRTUAL_ENV} ]]; then
+    segment+=' %F{cyan}'${VIRTUAL_ENV:t}
+  fi
+  if [[ -n ${SSH_TTY} ]] segment+=' %F{%(!.yellow.default)}%n@%m'
   if [[ -n ${segment} ]]; then
     _prompt_eriner_segment ${STATUS_COLOR} ${segment}' '
   fi
