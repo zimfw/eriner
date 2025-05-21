@@ -48,7 +48,7 @@ _prompt_eriner_status() {
   if (( ${#jobstates} )) segment+=' %F{cyan}⚙'
   if (( RANGER_LEVEL )) segment+=' %F{cyan}r'
   if [[ -n ${VIRTUAL_ENV_PROMPT} ]]; then
-    segment+=' %F{cyan}'${VIRTUAL_ENV_PROMPT% }
+    segment+=' %F{cyan}'${VIRTUAL_ENV_PROMPT}
   elif [[ -n ${VIRTUAL_ENV} ]]; then
     segment+=' %F{cyan}'${VIRTUAL_ENV:t}
   fi
