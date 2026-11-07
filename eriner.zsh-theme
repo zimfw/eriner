@@ -63,9 +63,7 @@ _prompt_eriner_status() {
     segment+=' %F{cyan}'${VIRTUAL_ENV:t}
   fi
   if [[ -n ${SSH_TTY} ]] segment+=' %F{%(!.yellow.default)}%n@%m'
-  if [[ -n ${segment} ]]; then
-    _prompt_eriner_segment ${STATUS_COLOR} ${segment}' '
-  fi
+  if [[ -n ${segment} ]] _prompt_eriner_segment ${STATUS_COLOR} ${segment}' '
 }
 
 # Pwd: current working directory.
